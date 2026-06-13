@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberSafe — Cybersecurity Learning Platform</title>
+<style>
+:root {
+  --bg:#0a0e1a; --bg2:#111827; --bg3:#1f2937; --bg4:#273344;
+  --border:#2d3748; --border2:#374151;
+  --text:#f1f5f9; --text2:#e2e8f0; --muted:#94a3b8; --muted2:#64748b;
+  --cyan:#00d4aa; --cyan2:#00b894; --cyan-dim:rgba(0,212,170,.1);
+  --blue:#3b82f6; --blue-dim:rgba(59,130,246,.1);
+  --purple:#8b5cf6; --purple-dim:rgba(139,92,246,.1);
+  --red:#ef4444; --red-dim:rgba(239,68,68,.1);
+  --amber:#f59e0b; --amber-dim:rgba(245,158,11,.1);
+  --green:#10b981; --green-dim:rgba(16,185,129,.1);
+  --r:10px; --rs:6px; --rx:16px;
+  --shadow:0 4px 24px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6}
+button{cursor:pointer;font-family:inherit;border:none;outline:none}
+input{font-family:inherit;outline:none}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* SVG ICONS */
+.icon{display:inline-flex;align-items:center;justify-content:center;flex-shrink:0}
+.icon svg{display:block}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:100;background:rgba(10,14,26,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;gap:8px}
+.logo{display:flex;align-items:center;gap:10px;cursor:pointer;flex-shrink:0;margin-right:8px}
+.logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--cyan),var(--blue));border-radius:8px;display:flex;align-items:center;justify-content:center}
+.logo-text{font-size:18px;font-weight:800;background:linear-gradient(135deg,var(--cyan),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:2px}
+.nav-link{padding:7px 14px;border-radius:var(--rs);font-size:14px;color:var(--muted);background:none;border:none;transition:.15s;font-weight:500}
+.nav-link:hover,.nav-link.active{color:var(--cyan);background:var(--cyan-dim)}
+.spacer{flex:1}
+.nav-right{display:flex;gap:8px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:var(--rs);font-size:14px;font-weight:600;border:none;transition:.15s;cursor:pointer;white-space:nowrap}
+.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--text2)}
+.btn-outline:hover{border-color:var(--cyan);color:var(--cyan)}
+.btn-primary{background:linear-gradient(135deg,var(--cyan),var(--blue));color:#fff}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px);box-shadow:0 4px 16px rgba(0,212,170,.25)}
+.btn-sm{padding:6px 14px;font-size:13px}
+.avatar-btn{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--blue));color:#fff;font-weight:800;font-size:15px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+
+/* PAGES */
+.page{display:none}.page.active{display:block}
+
+/* HERO */
+.hero{min-height:90vh;display:flex;align-items:center;padding:80px 24px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 60% -10%,rgba(0,212,170,.07),transparent 60%),radial-gradient(ellipse 50% 50% at 10% 100%,rgba(59,130,246,.06),transparent 60%)}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:48px 48px;opacity:.3;mask-image:radial-gradient(ellipse at center,black 30%,transparent 70%)}
+.hero-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 480px;gap:64px;align-items:center;position:relative;z-index:1;width:100%}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(0,212,170,.08);border:1px solid rgba(0,212,170,.2);color:var(--cyan);padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:24px}
+.hero h1{font-size:clamp(36px,5vw,60px);font-weight:900;line-height:1.08;margin-bottom:20px;letter-spacing:-1px}
+.hero h1 .accent{background:linear-gradient(135deg,var(--cyan),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-desc{font-size:17px;color:var(--muted);line-height:1.75;margin-bottom:36px;max-width:500px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px}
+.btn-hero{padding:13px 28px;font-size:15px;border-radius:var(--r)}
+.hero-stats{display:flex;gap:32px;flex-wrap:wrap}
+.hstat-val{font-size:26px;font-weight:800;color:var(--text)}
+.hstat-lbl{font-size:12px;color:var(--muted);margin-top:2px}
+.hero-visual{position:relative}
+.terminal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.terminal-bar{display:flex;align-items:center;gap:8px;padding:12px 16px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.dot{width:12px;height:12px;border-radius:50%}
+.terminal-body{padding:20px;font-family:'Consolas','Courier New',monospace;font-size:13px;line-height:1.8}
+.t-line{display:flex;gap:8px}
+.t-prompt{color:var(--cyan);font-weight:700}
+.t-cmd{color:var(--text2)}
+.t-out{color:var(--muted)}
+.t-green{color:var(--green)}
+.t-red{color:var(--red)}
+.t-amber{color:var(--amber)}
+.cursor{display:inline-block;width:8px;height:14px;background:var(--cyan);animation:blink 1s infinite;vertical-align:middle}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* SECTION */
+.section{max-width:1200px;margin:0 auto;padding:72px 24px}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:36px;gap:16px;flex-wrap:wrap}
+.sec-title{font-size:28px;font-weight:800;letter-spacing:-.5px}
+.sec-sub{font-size:14px;color:var(--muted);margin-top:6px}
+.sec-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cyan);margin-bottom:8px}
+
+/* COURSE CARDS */
+.courses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px}
+.ccard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:.2s;display:flex;flex-direction:column}
+.ccard:hover{border-color:rgba(0,212,170,.4);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
+.ccard-thumb{height:160px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.thumb-cyber{background:linear-gradient(135deg,#041a0f,#062e1a)}
+.thumb-network{background:linear-gradient(135deg,#040d1a,#071828)}
+.thumb-pentest{background:linear-gradient(135deg,#1a0404,#2e0707)}
+.thumb-linux{background:linear-gradient(135deg,#0d0d04,#1c1c07)}
+.thumb-awareness{background:linear-gradient(135deg,#08041a,#12072e)}
+.thumb-soc{background:linear-gradient(135deg,#04101a,#071c2e)}
+.thumb-icon{opacity:.9}
+.cbadge{position:absolute;top:12px;left:12px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;letter-spacing:.3px}
+.badge-free{background:var(--cyan);color:#000}
+.badge-popular{background:var(--red);color:#fff}
+.badge-new{background:var(--purple);color:#fff}
+.badge-top{background:var(--amber);color:#000}
+.ccard-body{padding:20px;flex:1;display:flex;flex-direction:column}
+.ctags{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.ctag{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:.3px}
+.tag-beg{background:var(--green-dim);color:var(--green)}
+.tag-int{background:var(--amber-dim);color:var(--amber)}
+.tag-adv{background:var(--red-dim);color:var(--red)}
+.tag-free{background:var(--cyan-dim);color:var(--cyan)}
+.ctitle{font-size:16px;font-weight:700;margin-bottom:4px;line-height:1.35;color:var(--text)}
+.ctitle-ar{font-size:12px;color:var(--muted2);margin-bottom:10px;font-style:italic}
+.cdesc{font-size:13px;color:var(--muted);line-height:1.6;flex:1;margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cfoot{display:flex;align-items:center;justify-content:space-between;padding-top:14px;border-top:1px solid var(--border)}
+.crating{font-size:13px;font-weight:700;color:var(--amber);display:flex;align-items:center;gap:4px}
+.cstudents{font-size:12px;color:var(--muted);margin-top:2px}
+.cprice{font-size:20px;font-weight:800}
+.cprice.free{color:var(--cyan)}
+.cprice.paid{color:var(--text)}
+.pbar-wrap{height:3px;background:var(--border);border-radius:3px;margin-top:12px;overflow:hidden}
+.pbar-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--blue));border-radius:3px;transition:width .4s}
+
+/* FILTERS */
+.filter-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.fbtn{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:500;transition:.15s}
+.fbtn:hover,.fbtn.active{background:var(--cyan);color:#000;border-color:var(--cyan);font-weight:700}
+.search-box{position:relative;margin-bottom:20px}
+.search-box input{width:100%;padding:12px 16px 12px 48px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);color:var(--text);font-size:14px;transition:.15s}
+.search-box input:focus{border-color:var(--cyan);background:var(--bg3)}
+.search-icon{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted)}
+
+/* COURSE DETAIL */
+.detail-wrap{max-width:1100px;margin:0 auto;padding:32px 24px}
+.detail-grid{display:grid;grid-template-columns:1fr 340px;gap:32px;align-items:start;margin-bottom:32px}
+.detail-h1{font-size:28px;font-weight:800;line-height:1.25;margin-bottom:8px;letter-spacing:-.5px}
+.detail-h1-ar{font-size:15px;color:var(--muted);font-style:italic;margin-bottom:14px}
+.detail-desc{font-size:15px;color:var(--muted);line-height:1.75;margin-bottom:18px}
+.detail-meta{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:20px}
+.dmeta{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.objectives-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:24px}
+.objectives-box h3{font-size:14px;font-weight:700;color:var(--cyan);margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+.obj-item{display:flex;align-items:flex-start;gap:10px;padding:5px 0;font-size:14px;color:var(--text2)}
+.obj-check{color:var(--cyan);flex-shrink:0;margin-top:2px}
+.enroll-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:24px;position:sticky;top:80px}
+.price-display{font-size:38px;font-weight:900;margin-bottom:20px;letter-spacing:-1px}
+.price-free{color:var(--cyan)}
+.price-paid{color:var(--text)}
+.enroll-main-btn{width:100%;padding:14px;font-size:16px;font-weight:700;border-radius:var(--rs);border:none;cursor:pointer;margin-bottom:14px;transition:.15s}
+.btn-enroll-free{background:linear-gradient(135deg,var(--cyan),var(--blue));color:#fff}
+.btn-enroll-free:hover{opacity:.9;transform:translateY(-1px)}
+.btn-enroll-pay{background:linear-gradient(135deg,#0070ba,#003087);color:#fff}
+.btn-enroll-pay:hover{opacity:.9}
+.btn-continue{background:linear-gradient(135deg,var(--green),var(--cyan));color:#fff}
+.card-perks{display:flex;flex-direction:column;gap:10px;margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+.perk-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted)}
+
+/* LESSONS */
+.lessons-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.lessons-hd{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.lessons-hd h3{font-size:15px;font-weight:700}
+.litem{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--border);transition:.12s;cursor:pointer}
+.litem:last-child{border-bottom:none}
+.litem:hover:not(.locked){background:rgba(255,255,255,.02)}
+.litem.locked{opacity:.55;cursor:not-allowed}
+.lnum{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--border2);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;transition:.15s}
+.lnum.done{background:var(--cyan);border-color:var(--cyan);color:#000}
+.lnum.current{border-color:var(--cyan);color:var(--cyan)}
+.linfo{flex:1;min-width:0}
+.ltitle{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ltitle-ar{font-size:11px;color:var(--muted2);margin-top:1px;font-style:italic}
+.ldur{font-size:12px;color:var(--muted);margin-top:3px}
+.lbadge{font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;flex-shrink:0}
+.lb-reading{background:var(--blue-dim);color:var(--blue)}
+.lb-quiz{background:var(--cyan-dim);color:var(--cyan)}
+
+/* LESSON VIEWER */
+.viewer-wrap{max-width:820px;margin:0 auto;padding:28px 24px}
+.viewer-header{display:flex;align-items:center;gap:12px;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.course-badge-sm{font-size:11px;font-weight:700;padding:4px 10px;border-radius:4px;background:var(--cyan-dim);color:var(--cyan);white-space:nowrap}
+.progress-info{flex:1}
+.progress-label{font-size:12px;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between}
+.lesson-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+.lesson-card-header{padding:24px 28px;border-bottom:1px solid var(--border);background:var(--bg3)}
+.lesson-card-header h1{font-size:22px;font-weight:800;margin-bottom:4px;line-height:1.3}
+.lesson-card-header .ar{font-size:13px;color:var(--muted);font-style:italic}
+.lesson-body{padding:28px}
+.lesson-body h2{font-size:20px;font-weight:800;margin:0 0 14px;color:var(--text)}
+.lesson-body h3{font-size:16px;font-weight:700;margin:24px 0 10px;color:var(--cyan)}
+.lesson-body h4{font-size:14px;font-weight:700;margin:16px 0 8px;color:var(--text2)}
+.lesson-body p{font-size:15px;line-height:1.8;color:#cbd5e1;margin-bottom:14px}
+.lesson-body ul,.lesson-body ol{margin:0 0 16px 20px}
+.lesson-body li{font-size:14px;line-height:1.75;color:#94a3b8;margin-bottom:4px}
+.lesson-body strong{color:var(--text);font-weight:700}
+.lesson-body em{color:var(--cyan);font-style:normal;font-weight:600}
+.info-box{background:rgba(0,212,170,.05);border-left:3px solid var(--cyan);border-radius:0 var(--rs) var(--rs) 0;padding:14px 16px;margin:18px 0;font-size:14px;color:#94a3b8;line-height:1.65}
+.warn-box{background:rgba(245,158,11,.05);border-left:3px solid var(--amber);border-radius:0 var(--rs) var(--rs) 0;padding:14px 16px;margin:18px 0;font-size:14px;color:#94a3b8;line-height:1.65}
+.danger-box{background:rgba(239,68,68,.05);border-left:3px solid var(--red);border-radius:0 var(--rs) var(--rs) 0;padding:14px 16px;margin:18px 0;font-size:14px;color:#94a3b8;line-height:1.65}
+.code-block{background:#060c18;border:1px solid var(--border);border-radius:var(--rs);overflow:hidden;margin:18px 0}
+.code-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:var(--bg3);border-bottom:1px solid var(--border)}
+.code-lang{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.code-body{padding:18px 20px;font-family:'Consolas','Courier New',monospace;font-size:13px;color:#7dd3fc;line-height:1.9;overflow-x:auto;white-space:pre}
+.table-wrap{overflow-x:auto;margin:18px 0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:var(--bg3);padding:10px 14px;text-align:left;font-weight:700;color:var(--text2);border-bottom:2px solid var(--border)}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--muted)}
+tr:hover td{background:rgba(255,255,255,.02)}
+
+/* QUIZ */
+.quiz-wrap{border-top:1px solid var(--border);margin-top:32px;padding-top:28px}
+.quiz-title{font-size:16px;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:8px}
+.quiz-item{margin-bottom:24px}
+.quiz-q{font-size:15px;font-weight:600;margin-bottom:12px;line-height:1.55;color:var(--text)}
+.quiz-opts{display:flex;flex-direction:column;gap:8px}
+.qopt{padding:12px 16px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);font-size:14px;color:var(--text2);cursor:pointer;transition:.12s;text-align:left;font-family:inherit}
+.qopt:hover:not([disabled]){border-color:var(--cyan);background:var(--cyan-dim)}
+.qopt.correct{background:var(--green-dim);border-color:var(--green);color:var(--green)}
+.qopt.wrong{background:var(--red-dim);border-color:var(--red);color:var(--red)}
+.quiz-score{margin-top:16px;padding:14px 16px;border-radius:var(--rs);font-size:14px;font-weight:600;display:none}
+.score-pass{background:var(--green-dim);border:1px solid var(--green);color:var(--green)}
+.score-fail{background:var(--red-dim);border:1px solid var(--red);color:var(--red)}
+.viewer-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px}
+
+/* DASHBOARD */
+.dash-wrap{max-width:1100px;margin:0 auto;padding:32px 24px}
+.dash-grid{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
+.dcard{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:20px;margin-bottom:16px}
+.dcard h3{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px}
+.user-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--blue));color:#fff;font-size:22px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.sbox{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:16px;text-align:center}
+.sbox-val{font-size:26px;font-weight:800;color:var(--cyan)}
+.sbox-lbl{font-size:12px;color:var(--muted);margin-top:3px}
+.eitem{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:.12s}
+.eitem:last-child{border-bottom:none}
+.eitem:hover{opacity:.8}
+.eicon{width:40px;height:40px;border-radius:var(--rs);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.einfo{flex:1;min-width:0}
+.etitle{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.certitem{display:flex;align-items:center;gap:12px;background:rgba(0,212,170,.04);border:1px solid rgba(0,212,170,.15);border-radius:var(--rs);padding:14px;margin-bottom:10px;cursor:pointer;transition:.12s}
+.certitem:hover{border-color:var(--cyan)}
+.cert-inf strong{display:block;font-size:14px;font-weight:700;color:var(--text)}
+.cert-inf span{font-size:12px;color:var(--muted)}
+
+/* CERTIFICATE */
+.cert-page{max-width:760px;margin:40px auto;padding:24px}
+.cert-doc{background:linear-gradient(160deg,#050c18,#0a1220);border:1px solid;border-color:var(--cyan);border-radius:var(--rx);padding:56px;text-align:center;position:relative;overflow:hidden}
+.cert-watermark{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.03;pointer-events:none}
+.cert-top-line{width:120px;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);margin:0 auto 28px}
+.cert-eyebrow{font-size:11px;font-weight:700;letter-spacing:3px;color:var(--cyan);text-transform:uppercase;margin-bottom:16px}
+.cert-this{font-size:15px;color:var(--muted);margin-bottom:4px}
+.cert-name{font-size:40px;font-weight:900;background:linear-gradient(135deg,var(--cyan),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin:12px 0;letter-spacing:-1px}
+.cert-completed{font-size:14px;color:var(--muted);margin-bottom:6px}
+.cert-course{font-size:22px;font-weight:800;color:var(--text);margin-bottom:32px}
+.cert-divider{display:flex;align-items:center;gap:16px;margin:28px 0;justify-content:center}
+.cert-line{flex:1;max-width:120px;height:1px;background:var(--border)}
+.cert-id{font-size:12px;color:var(--muted2);font-family:'Consolas',monospace;margin-top:20px}
+.cert-date{font-size:13px;color:var(--muted);margin-top:6px}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.overlay.open{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:36px;width:100%;max-width:420px;position:relative}
+.modal-close{position:absolute;top:14px;right:14px;background:var(--bg3);border:none;color:var(--muted);width:28px;height:28px;border-radius:50%;font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.modal-close:hover{color:var(--text)}
+.modal h2{font-size:22px;font-weight:800;margin-bottom:6px}
+.modal-sub{color:var(--muted);font-size:14px;margin-bottom:24px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.fg input{width:100%;padding:11px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--rs);color:var(--text);font-size:14px;transition:.15s}
+.fg input:focus{border-color:var(--cyan);background:var(--bg4)}
+.ferr{background:var(--red-dim);border:1px solid rgba(239,68,68,.3);color:#fca5a5;padding:10px 14px;border-radius:var(--rs);font-size:13px;margin-bottom:14px;display:none}
+.ferr.show{display:block}
+.modal-foot{text-align:center;font-size:13px;color:var(--muted);margin-top:14px}
+.modal-foot a{color:var(--cyan);font-weight:600;cursor:pointer}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(16px);background:var(--bg2);border:1px solid var(--border);color:var(--text);padding:11px 22px;border-radius:8px;font-size:14px;font-weight:500;z-index:999;opacity:0;transition:.25s;pointer-events:none;white-space:nowrap;max-width:90vw}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.ok{border-color:var(--cyan);color:var(--cyan)}
+.toast.err{border-color:var(--red);color:var(--red)}
+
+/* BACK */
+.back-btn{display:inline-flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--border);color:var(--muted);padding:8px 16px;border-radius:var(--rs);font-size:13px;font-weight:500;cursor:pointer;margin-bottom:24px;transition:.15s}
+.back-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* DIVIDER */
+.stripe-section{background:linear-gradient(135deg,rgba(0,212,170,.06),rgba(59,130,246,.06));border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:72px 24px;text-align:center}
+
+/* FOOTER */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:48px 24px 32px;margin-top:40px}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-top{display:flex;gap:48px;margin-bottom:40px;flex-wrap:wrap}
+.footer-brand{flex:1;min-width:200px}
+.footer-brand .logo-text{font-size:20px;font-weight:800}
+.footer-desc{font-size:13px;color:var(--muted);margin-top:10px;line-height:1.65;max-width:280px}
+.footer-col h4{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:14px}
+.footer-col a{display:block;font-size:13px;color:var(--muted2);margin-bottom:8px;cursor:pointer;transition:.12s}
+.footer-col a:hover{color:var(--cyan)}
+.footer-bottom{padding-top:24px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.footer-copy{font-size:12px;color:var(--muted2)}
+
+@media(max-width:900px){
+  .hero-inner{grid-template-columns:1fr;gap:40px}
+  .hero-visual{display:none}
+  .detail-grid{grid-template-columns:1fr}
+  .dash-grid{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .nav-links{display:none}
+  .hero{padding:60px 16px}
+  .courses-grid{grid-template-columns:1fr}
+  .stat-row{grid-template-columns:repeat(3,1fr)}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="logo" onclick="go('home')">
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <span class="logo-text">CyberSafe</span>
+    </div>
+    <div class="nav-links">
+      <button class="nav-link active" onclick="go('home')">Home</button>
+      <button class="nav-link" onclick="go('courses')">Courses</button>
+      <button class="nav-link" id="dash-link" onclick="go('dashboard')" style="display:none">Dashboard</button>
+    </div>
+    <div class="spacer"></div>
+    <div class="nav-right">
+      <div id="nav-auth" style="display:flex;gap:8px">
+        <button class="btn btn-outline btn-sm" onclick="openModal('login')">Sign In</button>
+        <button class="btn btn-primary btn-sm" onclick="openModal('register')">Get Started</button>
+      </div>
+      <div id="nav-user" style="display:none;align-items:center;gap:10px">
+        <span id="nav-name" style="font-size:14px;color:var(--muted)"></span>
+        <button class="avatar-btn" id="nav-av" onclick="go('dashboard')"></button>
+        <button class="btn btn-outline btn-sm" onclick="logout()">Sign Out</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          Global Curriculum · Arabic & English
+        </div>
+        <h1>Learn <span class="accent">Cybersecurity</span><br>The Right Way</h1>
+        <p class="hero-desc">Professional courses in Cybersecurity, Networking, Penetration Testing, Linux and more. Built from NIST, OWASP, and SANS standards. Free beginner courses included.</p>
+        <div class="hero-btns">
+          <button class="btn btn-primary btn-hero" onclick="go('courses')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 3l14 9-14 9V3z"/></svg>
+            Start Learning
+          </button>
+          <button class="btn btn-outline btn-hero" onclick="openModal('register')">Create Free Account</button>
+        </div>
+        <div class="hero-stats">
+          <div><div class="hstat-val">6</div><div class="hstat-lbl">Expert Courses</div></div>
+          <div><div class="hstat-val">15K+</div><div class="hstat-lbl">Students</div></div>
+          <div><div class="hstat-val">Free</div><div class="hstat-lbl">Beginner Tier</div></div>
+          <div><div class="hstat-val">Verified</div><div class="hstat-lbl">Certificates</div></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="dot" style="background:#ef4444"></div>
+            <div class="dot" style="background:#f59e0b"></div>
+            <div class="dot" style="background:#10b981"></div>
+            <span style="font-size:12px;color:var(--muted);margin-left:8px">cybersafe — terminal</span>
+          </div>
+          <div class="terminal-body">
+            <div class="t-line"><span class="t-prompt">$</span><span class="t-cmd"> nmap -sV 192.168.1.1</span></div>
+            <div class="t-line"><span class="t-out">Starting Nmap 7.94...</span></div>
+            <div class="t-line"><span class="t-green">PORT     STATE  SERVICE   VERSION</span></div>
+            <div class="t-line"><span class="t-out">22/tcp   open   ssh       OpenSSH 8.9</span></div>
+            <div class="t-line"><span class="t-out">80/tcp   open   http      Apache 2.4</span></div>
+            <div class="t-line"><span class="t-amber">443/tcp  open   ssl/https nginx 1.24</span></div>
+            <div class="t-line"><span class="t-out">3306/tcp open   mysql     MySQL 8.0</span></div>
+            <div class="t-line" style="margin-top:8px"><span class="t-prompt">$</span><span class="t-cmd"> hashcat -m 0 hash.txt rockyou.txt</span></div>
+            <div class="t-line"><span class="t-green">Session..........: hashcat</span></div>
+            <div class="t-line"><span class="t-out">Status...........: </span><span class="t-green">Cracked</span></div>
+            <div class="t-line" style="margin-top:8px"><span class="t-prompt">$</span><span class="t-cmd"> </span><span class="cursor"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-head">
+      <div>
+        <div class="sec-label">Curriculum</div>
+        <div class="sec-title">Featured Courses</div>
+        <div class="sec-sub">Start with free beginner courses, upgrade to advanced tracks</div>
+      </div>
+      <button class="btn btn-outline btn-sm" onclick="go('courses')">View All Courses
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="courses-grid" id="home-courses"></div>
+  </div>
+
+  <div class="stripe-section">
+    <div style="max-width:560px;margin:0 auto">
+      <div class="sec-label" style="margin-bottom:12px">Certification</div>
+      <div class="sec-title" style="margin-bottom:12px">Verified Certificates</div>
+      <p style="color:var(--muted);font-size:16px;line-height:1.75;margin-bottom:28px">Complete any course, pass the final exam, and receive a certificate with a unique verification ID. Share on LinkedIn or add to your CV.</p>
+      <button class="btn btn-primary" style="padding:13px 32px;font-size:15px;border-radius:var(--r)" onclick="openModal('register')">Create Free Account</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="logo-icon" style="width:32px;height:32px">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <span class="logo-text">CyberSafe</span>
+          </div>
+          <p class="footer-desc">World-class cybersecurity education in Arabic and English. Built on global standards: NIST, OWASP, SANS, CompTIA.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Courses</h4>
+          <a onclick="go('courses')">Cybersecurity Fundamentals</a>
+          <a onclick="go('courses')">Networking Basics</a>
+          <a onclick="go('courses')">Ethical Hacking</a>
+          <a onclick="go('courses')">Linux for Security</a>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a onclick="openModal('register')">Create Account</a>
+          <a onclick="openModal('login')">Sign In</a>
+          <a onclick="go('dashboard')">Dashboard</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2024 CyberSafe. All rights reserved.</div>
+        <div class="footer-copy">منصة CyberSafe للأمن السيبراني</div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- COURSES PAGE -->
+<div id="page-courses" class="page">
+  <div class="section">
+    <div class="sec-head" style="margin-bottom:20px">
+      <div>
+        <div class="sec-label">Library</div>
+        <div class="sec-title">All Courses</div>
+      </div>
+    </div>
+    <div class="search-box">
+      <span class="search-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      </span>
+      <input type="text" id="search-input" placeholder="Search courses in English or Arabic..." oninput="filterCourses()">
+    </div>
+    <div class="filter-bar" id="cat-filters">
+      <button class="fbtn active" data-cat="all" onclick="setCat(this,'all')">All</button>
+      <button class="fbtn" data-cat="cybersecurity" onclick="setCat(this,'cybersecurity')">Cybersecurity</button>
+      <button class="fbtn" data-cat="networking" onclick="setCat(this,'networking')">Networking</button>
+      <button class="fbtn" data-cat="pentesting" onclick="setCat(this,'pentesting')">Pentesting</button>
+      <button class="fbtn" data-cat="it" onclick="setCat(this,'it')">Linux & IT</button>
+      <button class="fbtn" data-cat="awareness" onclick="setCat(this,'awareness')">Awareness</button>
+    </div>
+    <div class="filter-bar">
+      <button class="fbtn active" data-lvl="all" onclick="setLvl(this,'all')">All Levels</button>
+      <button class="fbtn" data-lvl="beginner" onclick="setLvl(this,'beginner')">Beginner</button>
+      <button class="fbtn" data-lvl="intermediate" onclick="setLvl(this,'intermediate')">Intermediate</button>
+      <button class="fbtn" data-lvl="advanced" onclick="setLvl(this,'advanced')">Advanced</button>
+    </div>
+    <div class="courses-grid" id="all-courses"></div>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div id="page-detail" class="page">
+  <div class="detail-wrap">
+    <button class="back-btn" onclick="go('courses')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to Courses
+    </button>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<!-- LESSON -->
+<div id="page-lesson" class="page">
+  <div class="viewer-wrap" id="lesson-content"></div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="page-dashboard" class="page">
+  <div class="dash-wrap">
+    <h1 style="font-size:24px;font-weight:800;margin-bottom:24px">Welcome back, <span id="dash-name" style="color:var(--cyan)"></span></h1>
+    <div class="stat-row">
+      <div class="sbox"><div class="sbox-val" id="ds-en">0</div><div class="sbox-lbl">Enrolled</div></div>
+      <div class="sbox"><div class="sbox-val" id="ds-ce">0</div><div class="sbox-lbl">Certificates</div></div>
+      <div class="sbox"><div class="sbox-val" id="ds-av">0%</div><div class="sbox-lbl">Progress</div></div>
+    </div>
+    <div class="dash-grid">
+      <div>
+        <div class="dcard">
+          <div class="user-av" id="d-av"></div>
+          <div style="font-size:16px;font-weight:700" id="d-name"></div>
+          <div style="font-size:13px;color:var(--muted);margin-top:4px" id="d-email"></div>
+        </div>
+        <div class="dcard">
+          <h3>Certificates</h3>
+          <div id="certs-list"><p style="color:var(--muted);font-size:13px;line-height:1.6">No certificates yet.<br>Complete a course to earn one.</p></div>
+        </div>
+      </div>
+      <div class="dcard" style="margin-bottom:0">
+        <h3>My Courses</h3>
+        <div id="enrolled-list"><p style="color:var(--muted);font-size:14px">Not enrolled in any courses. <a href="#" onclick="go('courses')" style="color:var(--cyan)">Browse courses</a></p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CERT VIEW -->
+<div id="page-cert" class="page">
+  <div class="cert-page">
+    <button class="back-btn" onclick="go('dashboard')">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to Dashboard
+    </button>
+    <div class="cert-doc" id="cert-doc"></div>
+    <div style="text-align:center;margin-top:16px">
+      <button class="btn btn-outline btn-sm" onclick="window.print()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print Certificate
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="overlay" id="auth-overlay" onclick="closeOvOutside(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeOv()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div id="m-login">
+      <h2>Welcome back</h2>
+      <p class="modal-sub">Sign in to continue learning</p>
+      <div class="ferr" id="le"></div>
+      <div class="fg"><label>Email</label><input type="email" id="l-email" placeholder="you@email.com"></div>
+      <div class="fg"><label>Password</label><input type="password" id="l-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"></div>
+      <button class="btn btn-primary" style="width:100%;padding:13px;font-size:15px;border-radius:var(--rs)" onclick="doLogin()">Sign In</button>
+      <div class="modal-foot">No account? <a onclick="switchM('register')">Create one free</a></div>
+    </div>
+    <div id="m-register" style="display:none">
+      <h2>Create account</h2>
+      <p class="modal-sub">Join thousands learning cybersecurity</p>
+      <div class="ferr" id="re"></div>
+      <div class="fg"><label>Full Name</label><input type="text" id="r-name" placeholder="Your full name"></div>
+      <div class="fg"><label>Email</label><input type="email" id="r-email" placeholder="you@email.com"></div>
+      <div class="fg"><label>Password</label><input type="password" id="r-pass" placeholder="At least 6 characters" onkeydown="if(event.key==='Enter')doRegister()"></div>
+      <button class="btn btn-primary" style="width:100%;padding:13px;font-size:15px;border-radius:var(--rs)" onclick="doRegister()">Create Account</button>
+      <div class="modal-foot">Already have an account? <a onclick="switchM('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- PAYPAL MODAL -->
+<div class="overlay" id="pay-overlay" onclick="if(event.target.id==='pay-overlay')closePayOv()">
+  <div class="modal">
+    <button class="modal-close" onclick="closePayOv()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <h2>Complete Purchase</h2>
+    <p class="modal-sub" id="pay-desc">Secure checkout via PayPal</p>
+    <div id="paypal-container" style="margin-top:20px"></div>
+    <p style="color:var(--muted2);font-size:12px;text-align:center;margin-top:14px;display:flex;align-items:center;justify-content:center;gap:6px">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Secured by PayPal
+    </p>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API='/api';
+let token=localStorage.getItem('cs_token');
+let user=null,enrolled=[],courses=[],currentCat='all',currentLvl='all';
+let paypalReady=false,pendingPay=null;
+
+const thumbClass={cybersecurity:'thumb-cyber',networking:'thumb-network',pentesting:'thumb-pentest',it:'thumb-linux',awareness:'thumb-awareness',soc:'thumb-soc'};
+const lvlLabel={beginner:'Beginner',intermediate:'Intermediate',advanced:'Advanced'};
+// SVG icons for course thumbnails
+const thumbSVG={
+  cybersecurity:`<svg class="thumb-icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(0,212,170,.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+  networking:`<svg class="thumb-icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(59,130,246,.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="6" height="6" rx="1"/><rect x="16" y="2" width="6" height="6" rx="1"/><rect x="9" y="16" width="6" height="6" rx="1"/><path d="M5 8v3a4 4 0 0 0 4 4h6a4 4 0 0 0 4-4V8"/><line x1="12" y1="12" x2="12" y2="16"/></svg>`,
+  pentesting:`<svg class="thumb-icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(239,68,68,.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5l6.74-6.76z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17" y1="15" x2="9" y2="15"/></svg>`,
+  it:`<svg class="thumb-icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(245,158,11,.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>`,
+  awareness:`<svg class="thumb-icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(139,92,246,.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+  soc:`<svg class="thumb-icon" width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(59,130,246,.6)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>`
+};
+
+async function api(path,opts={}){
+  const h={'Content-Type':'application/json'};
+  if(token)h['Authorization']='Bearer '+token;
+  const r=await fetch(API+path,{headers:h,...opts});
+  return r.json();
+}
+
+function toast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast'+(type?' '+type:'')+' show';
+  setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+function go(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-link').forEach(b=>b.classList.remove('active'));
+  const idx={home:0,courses:1,dashboard:2};
+  document.querySelectorAll('.nav-link')[idx[name]]?.classList.add('active');
+  if(name==='courses')loadCourses();
+  if(name==='home')loadHome();
+  if(name==='dashboard')loadDash();
+  window.scrollTo(0,0);
+}
+
+function updateNav(){
+  if(user){
+    document.getElementById('nav-auth').style.display='none';
+    const nu=document.getElementById('nav-user');nu.style.display='flex';
+    document.getElementById('nav-name').textContent=user.name.split(' ')[0];
+    document.getElementById('nav-av').textContent=user.avatar||user.name[0];
+    document.getElementById('dash-link').style.display='block';
+  }else{
+    document.getElementById('nav-auth').style.display='flex';
+    document.getElementById('nav-user').style.display='none';
+    document.getElementById('dash-link').style.display='none';
+  }
+}
+
+async function init(){
+  if(token){
+    const r=await api('/auth/me');
+    if(r.user){user=r.user;enrolled=r.enrollments||[];}
+    else{token=null;localStorage.removeItem('cs_token');}
+  }
+  updateNav();loadHome();
+  const pr=await api('/config/paypal');
+  if(pr.clientId&&pr.clientId!=='test'){
+    const s=document.createElement('script');
+    s.src=`https://www.paypal.com/sdk/js?client-id=${pr.clientId}&currency=USD`;
+    s.onload=()=>{paypalReady=true;};
+    document.head.appendChild(s);
+  }
+}
+
+function cardHTML(c,prog=null){
+  const badgeMap={'Most Popular':'badge-popular','New':'badge-new','Top Rated':'badge-top','Free':'badge-free'};
+  const bClass=badgeMap[c.badge]||(c.isFree?'badge-free':'');
+  const bText=c.badge||(c.isFree?'FREE':'');
+  const isEnrolled=enrolled.includes(c._id);
+  return `<div class="ccard" onclick="openCourse('${c._id}')">
+    <div class="ccard-thumb ${thumbClass[c.category]||'thumb-cyber'}">
+      ${thumbSVG[c.category]||thumbSVG.cybersecurity}
+      ${bText?`<span class="cbadge ${bClass}">${bText}</span>`:''}
+    </div>
+    <div class="ccard-body">
+      <div class="ctags">
+        <span class="ctag tag-${c.level}">${lvlLabel[c.level]}</span>
+        ${c.isFree?'<span class="ctag tag-free">Free</span>':''}
+      </div>
+      <div class="ctitle">${c.title}</div>
+      <div class="ctitle-ar">${c.titleAr||''}</div>
+      <div class="cdesc">${c.description}</div>
+      <div class="cfoot">
+        <div>
+          <div class="crating">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="${'var(--amber)'}" stroke="var(--amber)" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            ${c.rating}
+          </div>
+          <div class="cstudents">${c.studentsCount?.toLocaleString()} students</div>
+        </div>
+        <div class="cprice ${c.isFree?'free':'paid'}">${c.isFree?'Free':'$'+c.price}</div>
+      </div>
+      ${prog!==null?`<div class="pbar-wrap"><div class="pbar-fill" style="width:${prog}%"></div></div>`:''}
+    </div>
+  </div>`;
+}
+
+async function loadHome(){
+  if(!courses.length)courses=await api('/courses');
+  document.getElementById('home-courses').innerHTML=courses.slice(0,3).map(c=>cardHTML(c)).join('');
+}
+
+async function loadCourses(){
+  if(!courses.length)courses=await api('/courses');
+  filterCourses();
+}
+
+function filterCourses(){
+  const s=document.getElementById('search-input')?.value?.toLowerCase()||'';
+  let f=courses.filter(c=>{
+    const mc=currentCat==='all'||c.category===currentCat;
+    const ml=currentLvl==='all'||c.level===currentLvl;
+    const ms=!s||c.title.toLowerCase().includes(s)||c.description.toLowerCase().includes(s)||(c.titleAr||'').includes(s);
+    return mc&&ml&&ms;
+  });
+  document.getElementById('all-courses').innerHTML=f.length?f.map(c=>cardHTML(c)).join(''):'<p style="color:var(--muted);padding:40px;text-align:center;grid-column:1/-1">No courses found.</p>';
+}
+
+function setCat(btn,cat){currentCat=cat;document.querySelectorAll('[data-cat]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');filterCourses();}
+function setLvl(btn,lvl){currentLvl=lvl;document.querySelectorAll('[data-lvl]').forEach(b=>b.classList.remove('active'));btn.classList.add('active');filterCourses();}
+
+async function openCourse(id){
+  const c=await api('/courses/'+id);
+  const isEn=user&&(enrolled.includes(id)||c.enrolled);
+  let prog=null;
+  if(isEn)prog=await api('/courses/'+id+'/my-progress');
+  const el=document.getElementById('detail-content');
+  el.innerHTML=`
+    <div class="detail-grid">
+      <div>
+        <div class="ctags" style="margin-bottom:12px">
+          <span class="ctag tag-${c.level}">${lvlLabel[c.level]}</span>
+          ${c.isFree?'<span class="ctag tag-free">Free</span>':''}
+        </div>
+        <h1 class="detail-h1">${c.title}</h1>
+        <div class="detail-h1-ar">${c.titleAr||''}</div>
+        <p class="detail-desc">${c.description}</p>
+        <div class="detail-meta">
+          <span class="dmeta"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>${c.duration}</span>
+          <span class="dmeta"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>${c.lessons?.length} lessons</span>
+          <span class="dmeta"><svg width="14" height="14" viewBox="0 0 24 24" fill="var(--amber)" stroke="var(--amber)" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>${c.rating}</span>
+          <span class="dmeta"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>${c.studentsCount?.toLocaleString()}</span>
+        </div>
+        ${isEn&&prog?`<div style="margin-bottom:18px"><div style="font-size:13px;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:7px"><span>Your progress</span><strong style="color:var(--cyan)">${prog.overall}%</strong></div><div class="pbar-wrap" style="height:5px"><div class="pbar-fill" style="width:${prog.overall}%"></div></div></div>`:''}
+        <div class="objectives-box">
+          <h3>What you'll learn</h3>
+          ${c.objectives?.map(o=>`<div class="obj-item"><svg class="obj-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${o}</div>`).join('')||''}
+        </div>
+      </div>
+      <div>
+        <div class="enroll-card">
+          <div class="price-display ${c.isFree?'price-free':'price-paid'}">${c.isFree?'Free':'$'+c.price}</div>
+          ${isEn
+            ?`<button class="enroll-main-btn btn-continue" onclick="continueCourse('${c._id}')">Continue Learning</button>`
+            :c.isFree
+              ?`<button class="enroll-main-btn btn-enroll-free" onclick="enrollFree('${c._id}')">Enroll for Free</button>`
+              :`<button class="enroll-main-btn btn-enroll-pay" onclick="openPay('${c._id}',${c.price},'${c.title}')">Enroll — $${c.price}</button>`
+          }
+          <div class="card-perks">
+            <div class="perk-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>Verified certificate</div>
+            <div class="perk-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>${c.lessons?.length} in-depth lessons</div>
+            <div class="perk-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Arabic & English</div>
+            <div class="perk-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>From NIST · OWASP · SANS</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="lessons-card">
+      <div class="lessons-hd"><h3>Course Content</h3><span style="font-size:13px;color:var(--muted)">${c.lessons?.length} lessons · ${c.duration}</span></div>
+      ${c.lessons?.map((l,i)=>{
+        const done=prog?.lessons?.find(p=>p.lessonId===l.id&&p.completed);
+        const canAccess=l.free||isEn;
+        return `<div class="litem ${canAccess?'':'locked'}" onclick="${canAccess?`startLesson('${c._id}','${l.id}',${i})`:`toast('Enroll to unlock all lessons','err')`}">
+          <div class="lnum ${done?'done':''}">
+            ${done?`<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`:i+1}
+          </div>
+          <div class="linfo">
+            <div class="ltitle">${l.title}</div>
+            <div class="ltitle-ar">${l.titleAr||''}</div>
+            <div class="ldur">${l.duration}</div>
+          </div>
+          <span class="lbadge ${l.type==='quiz'?'lb-quiz':'lb-reading'}">${l.type}</span>
+          ${!canAccess?`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted2)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`:''}
+        </div>`;
+      }).join('')||''}
+    </div>`;
+  go('detail');
+}
+
+async function enrollFree(id){
+  if(!user){openModal('register');return;}
+  const r=await api('/courses/'+id+'/enroll',{method:'POST'});
+  if(r.error){toast(r.error,'err');return;}
+  toast('Enrolled successfully!','ok');
+  enrolled.push(id);openCourse(id);
+}
+
+function continueCourse(id){
+  const c=courses.find(x=>x._id===id);
+  if(c)startLesson(id,c.lessons[0].id,0);
+}
+
+function openPay(courseId,price,title){
+  if(!user){openModal('register');return;}
+  pendingPay={courseId,price,title};
+  document.getElementById('pay-desc').textContent=`${title} — $${price}`;
+  document.getElementById('pay-overlay').classList.add('open');
+  document.getElementById('paypal-container').innerHTML='';
+  if(paypalReady&&typeof paypal!=='undefined'){
+    paypal.Buttons({
+      createOrder:(d,a)=>a.order.create({purchase_units:[{amount:{value:price.toString()}}]}),
+      onApprove:async(d,a)=>{
+        await a.order.capture();
+        const r=await api('/payment/verify',{method:'POST',body:JSON.stringify({courseId,orderId:d.orderID})});
+        if(!r.error){
+          enrolled.push(courseId);
+          document.getElementById('pay-overlay').classList.remove('open');
+          toast('Payment successful! Welcome to the course.','ok');
+          openCourse(courseId);
+        }
+      },
+      onError:()=>toast('Payment failed. Please try again.','err')
+    }).render('#paypal-container');
+  }else{
+    document.getElementById('paypal-container').innerHTML=`<div style="background:var(--bg3);border-radius:var(--rs);padding:20px;text-align:center"><p style="color:var(--muted);font-size:14px;margin-bottom:10px">PayPal not configured yet.</p><p style="color:var(--muted2);font-size:13px">Add <code style="color:var(--cyan)">PAYPAL_CLIENT_ID</code> to your Render environment variables.</p></div>`;
+  }
+}
+function closePayOv(){document.getElementById('pay-overlay').classList.remove('open');}
+
+async function startLesson(courseId,lessonId,idx){
+  if(!user){openModal('login');return;}
+  const lesson=await api(`/courses/${courseId}/lesson/${lessonId}`);
+  if(lesson.error){toast(lesson.error,'err');return;}
+  const c=courses.find(x=>x._id===courseId)||await api('/courses/'+courseId);
+  const all=c.lessons||[];
+  let answered=0,correct=0;
+
+  function quizHTML(qs){
+    if(!qs?.length)return'';
+    const isFinal=idx===all.length-1;
+    return`<div class="quiz-wrap">
+      <div class="quiz-title">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        ${isFinal?'Final Exam':'Knowledge Check'}
+      </div>
+      ${qs.map((q,qi)=>`<div class="quiz-item" id="qi${qi}">
+        <div class="quiz-q">${qi+1}. ${q.q}</div>
+        <div class="quiz-opts">${q.options.map((o,oi)=>`<button class="qopt" onclick="answerQ(${qi},${oi},${q.correct},${qs.length})" id="qo${qi}_${oi}">${o}</button>`).join('')}</div>
+      </div>`).join('')}
+      <div class="quiz-score" id="qscore"></div>
+    </div>`;
+  }
+
+  document.getElementById('lesson-content').innerHTML=`
+    <div class="viewer-header">
+      <button class="back-btn" style="margin:0" onclick="openCourse('${courseId}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        ${c.title}
+      </button>
+      <div class="progress-info">
+        <div class="progress-label"><span>Lesson ${idx+1} of ${all.length}</span><span style="color:var(--cyan);font-weight:700">${Math.round(((idx+1)/all.length)*100)}%</span></div>
+        <div class="pbar-wrap"><div class="pbar-fill" style="width:${Math.round(((idx+1)/all.length)*100)}%"></div></div>
+      </div>
+      <span class="course-badge-sm">${lvlLabel[c.level]}</span>
+    </div>
+    <div class="lesson-card">
+      <div class="lesson-card-header">
+        <h1>${lesson.title}</h1>
+        <div class="ar">${lesson.titleAr||''}</div>
+      </div>
+      <div class="lesson-body">
+        ${lesson.content||''}
+        ${quizHTML(lesson.quiz)}
+      </div>
+    </div>
+    <div class="viewer-nav">
+      ${idx>0?`<button class="btn btn-outline" onclick="startLesson('${courseId}','${all[idx-1].id}',${idx-1})">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Previous
+      </button>`:'<div></div>'}
+      ${idx<all.length-1
+        ?`<button class="btn btn-primary" id="next-btn" onclick="completeNext('${courseId}','${lesson.id}','${all[idx+1].id}',${idx+1})">
+          Mark Complete & Next
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>`
+        :`<button class="btn btn-primary" id="next-btn" style="background:linear-gradient(135deg,var(--amber),var(--red))" onclick="completeFinal('${courseId}','${lesson.id}')">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+          Complete & Get Certificate
+        </button>`
+      }
+    </div>`;
+  go('lesson');
+
+  window.answerQ=function(qi,sel,cor,total){
+    const opts=document.querySelectorAll(`[id^="qo${qi}_"]`);
+    opts.forEach(o=>{o.disabled=true;});
+    opts[cor].classList.add('correct');
+    if(sel!==cor)opts[sel].classList.add('wrong');
+    else correct++;
+    answered++;
+    if(answered===total){
+      const pct=Math.round((correct/total)*100);
+      const sc=document.getElementById('qscore');
+      sc.style.display='block';
+      sc.className='quiz-score '+(pct>=70?'score-pass':'score-fail');
+      sc.textContent=pct>=70?`Passed: ${correct}/${total} (${pct}%) — Great work!`:`Score: ${correct}/${total} (${pct}%) — Need 70% to pass. Review and retry.`;
+      if(pct<70&&idx===all.length-1){const nb=document.getElementById('next-btn');if(nb)nb.disabled=true;}
+    }
+  };
+}
+
+async function completeNext(cId,lId,nextId,nextIdx){
+  await api(`/courses/${cId}/progress`,{method:'POST',body:JSON.stringify({lessonId:lId,completed:true})});
+  const c=courses.find(x=>x._id===cId);
+  startLesson(cId,nextId,nextIdx);
+}
+
+async function completeFinal(cId,lId){
+  const r=await api(`/courses/${cId}/progress`,{method:'POST',body:JSON.stringify({lessonId:lId,completed:true})});
+  if(r.progress===100){toast('Certificate earned! Check your dashboard.','ok');setTimeout(()=>go('dashboard'),2000);}
+  else{toast(`Progress: ${r.progress}%`,'ok');openCourse(cId);}
+}
+
+async function loadDash(){
+  if(!user){go('home');openModal('login');return;}
+  const r=await api('/auth/me');
+  user=r.user;enrolled=r.enrollments||[];
+  const certs=r.certificates||[];
+  document.getElementById('dash-name').textContent=user.name.split(' ')[0];
+  document.getElementById('d-name').textContent=user.name;
+  document.getElementById('d-email').textContent=user.email;
+  document.getElementById('d-av').textContent=user.avatar||user.name[0];
+  document.getElementById('ds-en').textContent=enrolled.length;
+  document.getElementById('ds-ce').textContent=certs.length;
+  if(!courses.length)courses=await api('/courses');
+  const myCourses=courses.filter(c=>enrolled.includes(c._id));
+  const progs=await Promise.all(myCourses.map(c=>api('/courses/'+c._id+'/my-progress')));
+  const avg=progs.length?Math.round(progs.reduce((a,p)=>a+(p.overall||0),0)/progs.length):0;
+  document.getElementById('ds-av').textContent=avg+'%';
+  document.getElementById('enrolled-list').innerHTML=myCourses.length
+    ?myCourses.map((c,i)=>`<div class="eitem" onclick="openCourse('${c._id}')">
+        <div class="eicon ${thumbClass[c.category]||'thumb-cyber'}">${thumbSVG[c.category]||thumbSVG.cybersecurity}</div>
+        <div class="einfo">
+          <div class="etitle">${c.title}</div>
+          <div class="pbar-wrap"><div class="pbar-fill" style="width:${progs[i].overall||0}%"></div></div>
+          <div style="font-size:12px;color:var(--muted);margin-top:4px">${progs[i].overall||0}% complete</div>
+        </div>
+        <button class="btn btn-primary btn-sm">Continue</button>
+      </div>`).join('')
+    :'<p style="color:var(--muted);font-size:14px">No courses yet. <a href="#" onclick="go(\'courses\')" style="color:var(--cyan)">Browse courses</a></p>';
+  document.getElementById('certs-list').innerHTML=certs.length
+    ?certs.map(c=>`<div class="certitem" onclick="viewCert('${c._id}')">
+        <svg class="cert-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+        <div class="cert-inf"><strong>${c.courseTitle}</strong><span>${c.certId} · ${new Date(c.issuedAt).toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'})}</span></div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2" style="margin-left:auto"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>`).join('')
+    :'<p style="color:var(--muted);font-size:13px">No certificates yet.</p>';
+}
+
+async function viewCert(certId){
+  const r=await api('/auth/me');
+  const cert=r.certificates?.find(c=>c._id===certId);
+  if(!cert)return;
+  document.getElementById('cert-doc').innerHTML=`
+    <div class="cert-watermark">
+      <svg width="300" height="300" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="0.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <div class="cert-top-line"></div>
+    <div class="cert-eyebrow">Certificate of Completion</div>
+    <div class="cert-this">This is to certify that</div>
+    <div class="cert-name">${cert.userName}</div>
+    <div class="cert-completed">has successfully completed</div>
+    <div class="cert-course">${cert.courseTitle}</div>
+    <div class="cert-divider">
+      <div class="cert-line"></div>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div class="cert-line"></div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:48px">
+      <div style="text-align:center"><div style="font-size:18px;font-weight:800;color:var(--text)">CyberSafe</div><div style="font-size:11px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:1px">Platform</div></div>
+      <div style="text-align:center"><div style="font-size:16px;font-weight:700;color:var(--text)">${new Date(cert.issuedAt).toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'})}</div><div style="font-size:11px;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:1px">Date Issued</div></div>
+    </div>
+    <div class="cert-id">Certificate ID: ${cert.certId}</div>`;
+  go('cert');
+}
+
+// AUTH
+function openModal(type){
+  document.getElementById('auth-overlay').classList.add('open');
+  document.getElementById('m-login').style.display=type==='login'?'block':'none';
+  document.getElementById('m-register').style.display=type==='register'?'block':'none';
+}
+function closeOv(){document.getElementById('auth-overlay').classList.remove('open');}
+function closeOvOutside(e){if(e.target.id==='auth-overlay')closeOv();}
+function switchM(t){openModal(t);}
+
+async function doLogin(){
+  const email=document.getElementById('l-email').value;
+  const password=document.getElementById('l-pass').value;
+  const err=document.getElementById('le');err.classList.remove('show');
+  const r=await api('/auth/login',{method:'POST',body:JSON.stringify({email,password})});
+  if(r.error){err.textContent=r.error;err.classList.add('show');return;}
+  token=r.token;user=r.user;localStorage.setItem('cs_token',token);
+  closeOv();toast('Welcome back, '+r.user.name+'!','ok');updateNav();
+}
+
+async function doRegister(){
+  const name=document.getElementById('r-name').value;
+  const email=document.getElementById('r-email').value;
+  const password=document.getElementById('r-pass').value;
+  const err=document.getElementById('re');err.classList.remove('show');
+  const r=await api('/auth/register',{method:'POST',body:JSON.stringify({name,email,password})});
+  if(r.error){err.textContent=r.error;err.classList.add('show');return;}
+  token=r.token;user=r.user;enrolled=[];localStorage.setItem('cs_token',token);
+  closeOv();toast('Account created! Welcome to CyberSafe.','ok');updateNav();
+}
+
+function logout(){
+  token=null;user=null;enrolled=[];localStorage.removeItem('cs_token');
+  updateNav();go('home');toast('Signed out.');
+}
+
+init();
+</script>
+</body>
+</html>
